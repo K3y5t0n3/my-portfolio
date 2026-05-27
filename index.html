@@ -1,0 +1,2185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rachana A/P Dipan — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #050810;
+      --bg2:       #080c18;
+      --surface:   #0d1224;
+      --surface2:  #111829;
+      --border:    rgba(99,179,237,0.12);
+      --border2:   rgba(99,179,237,0.22);
+      --accent:    #38bdf8;
+      --accent2:   #7dd3fc;
+      --accent3:   #0ea5e9;
+      --glow:      rgba(56,189,248,0.18);
+      --glow2:     rgba(56,189,248,0.06);
+      --text:      #e2eaf8;
+      --muted:     #7a90b8;
+      --muted2:    #4a5a78;
+      --green:     #34d399;
+      --purple:    #a78bfa;
+      --pink:      #f472b6;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --font-serif:'Instrument Serif', serif;
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      overflow-x: hidden;
+    }
+
+    /* NOISE TEXTURE OVERLAY */
+    body::before {
+      content:'';
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.35;
+    }
+
+    /* GRID BACKGROUND */
+    .grid-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+      opacity: 0.4;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent3); border-radius: 2px; }
+
+    section { position: relative; z-index: 1; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .section-label::before {
+      content:''; display: inline-block;
+      width: 2rem; height: 1px; background: var(--accent); flex-shrink: 0;
+    }
+    h2.section-title {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, var(--accent2), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.8rem;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #03080f;
+      font-weight: 500;
+      box-shadow: 0 0 20px var(--glow), 0 0 40px rgba(56,189,248,0.08);
+    }
+    .btn-primary:hover { background: var(--accent2); box-shadow: 0 0 30px rgba(56,189,248,0.4); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--border2);
+    }
+    .btn-outline:hover { background: var(--glow2); border-color: var(--accent); box-shadow: 0 0 20px var(--glow); transform: translateY(-2px); }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.2rem 0;
+      transition: background 0.3s, border-bottom 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(5,8,16,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1120px; margin: 0 auto; padding: 0 2rem;
+    }
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content:''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px;
+      background: var(--accent); transition: width 0.25s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta { display: flex; gap: 1rem; align-items: center; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--muted); transition: all 0.3s; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 0 4rem;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      border: 1px solid var(--border2);
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1.6rem;
+      background: var(--glow2);
+    }
+    .hero-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse-dot 2s infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.7)} }
+    .hero-name {
+      font-family: var(--font-head);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 0.6rem;
+    }
+    .hero-subtitle {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .hero-desc {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-stats {
+      display: flex; gap: 2rem; margin-top: 3rem; padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-top: 0.2rem;
+    }
+
+    /* Hero Visual */
+    .hero-visual {
+      position: relative;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .hero-card {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 0 60px rgba(56,189,248,0.08);
+    }
+    .hero-card-name {
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 0.3rem;
+    }
+    .hero-card-role {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-card-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+    .hero-card-item:last-child { border-bottom: none; }
+    .hero-card-key { color: var(--muted2); }
+    .hero-card-val { color: var(--text); font-weight: 500; }
+    .hero-card-val.accent { color: var(--accent); }
+    .hero-card-val.green { color: var(--green); }
+    .hero-card-val.purple { color: var(--purple); }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      background: rgba(52,211,153,0.1);
+      border: 1px solid rgba(52,211,153,0.3);
+      color: var(--green);
+    }
+    .status-pill .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse-dot 2s infinite; }
+
+    /* ABOUT */
+    #about { padding: 8rem 0; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .about-left { position: sticky; top: 8rem; }
+    .about-name {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .about-role {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+    .contact-pills { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; }
+    .contact-pill {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .contact-pill:hover { color: var(--accent); }
+    .contact-pill-icon {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0;
+    }
+    .about-links { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+    .social-link {
+      display: flex; align-items: center; justify-content: center;
+      height: 34px;
+      padding: 0 1rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .social-link:hover { color: var(--accent); border-color: var(--accent); background: var(--glow2); box-shadow: 0 0 14px var(--glow); }
+    .about-text p {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+    .about-text p strong { color: var(--text); font-weight: 500; }
+    .highlight-accent { color: var(--accent); }
+    .highlight-purple { color: var(--purple); }
+    .highlight-green { color: var(--green); }
+    .edu-block {
+      margin-top: 2rem; padding: 1.5rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 4px 4px 0;
+      margin-bottom: 1rem;
+    }
+    .edu-degree {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .edu-inst {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .edu-gpa {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--green);
+      margin-top: 0.4rem;
+    }
+    .dean-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.6rem; }
+    .dean-badge {
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      background: rgba(167,139,250,0.1);
+      border: 1px solid rgba(167,139,250,0.3);
+      color: var(--purple);
+    }
+
+    /* SKILLS */
+    #skills { padding: 7rem 0; }
+    .skills-intro {
+      max-width: 600px;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 4rem;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.8rem;
+    }
+    .skill-chip {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.8rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.25s;
+    }
+    .skill-chip:hover {
+      border-color: var(--border2);
+      background: var(--surface2);
+      box-shadow: 0 0 20px var(--glow2);
+      transform: translateY(-3px);
+    }
+    .skill-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .skill-name {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text);
+    }
+    .skill-level {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--muted2);
+      margin-left: auto;
+      letter-spacing: 0.04em;
+    }
+    .skill-cat-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin: 2.5rem 0 1rem;
+    }
+    .dot-blue { background: var(--accent); }
+    .dot-purple { background: var(--purple); }
+    .dot-green { background: var(--green); }
+    .dot-pink { background: var(--pink); }
+
+    /* PROJECTS */
+    #projects { padding: 7rem 0; }
+    .projects-filter {
+      display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem; margin-top: 1.5rem;
+    }
+    .filter-btn {
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--glow2);
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+      gap: 1.2rem;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .project-card:hover {
+      border-color: var(--border2);
+      box-shadow: 0 0 40px var(--glow2), 0 10px 40px rgba(0,0,0,0.5);
+      transform: translateY(-4px);
+    }
+    .project-card[data-hidden="true"] { display: none; }
+    .project-header {
+      padding: 1.5rem 1.5rem 0;
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .project-cat-tag {
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid;
+    }
+    .project-body { padding: 1.2rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
+    .project-title {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+    .project-course {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--muted2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.7rem;
+    }
+    .project-desc {
+      font-family: var(--font-mono);
+      font-size: 0.81rem;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      flex: 1;
+    }
+    .project-tech {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .tech-tag {
+      padding: 0.22rem 0.6rem;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.67rem;
+      letter-spacing: 0.04em;
+      border: 1px solid;
+    }
+    .tag-blue  { color: var(--accent2);  border-color: rgba(125,211,252,0.25); background: rgba(56,189,248,0.06); }
+    .tag-purple{ color: var(--purple);   border-color: rgba(167,139,250,0.25); background: rgba(167,139,250,0.06); }
+    .tag-green { color: var(--green);    border-color: rgba(52,211,153,0.25);  background: rgba(52,211,153,0.06); }
+    .tag-pink  { color: var(--pink);     border-color: rgba(244,114,182,0.25); background: rgba(244,114,182,0.06); }
+    .project-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.9rem 1.5rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted2);
+    }
+
+    /* RESUME */
+    #resume { padding: 7rem 0; }
+    .resume-cta-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .resume-cta-box::before {
+      content:'';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--purple), transparent);
+    }
+    .resume-text h3 {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+      line-height: 1.2;
+    }
+    .resume-text p {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+    }
+
+    /* CONTACT */
+    #contact { padding: 7rem 0 10rem; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .contact-info h3 {
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .contact-info p {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 0.9rem;
+      margin-bottom: 1.2rem;
+    }
+    .contact-bullet {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0; margin-top: 0.4rem;
+    }
+    .contact-item-text { font-family: var(--font-mono); font-size: 0.82rem; }
+    .contact-item-label { font-size: 0.68rem; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.15rem; }
+    .contact-item-val { color: var(--text); }
+    .contact-item-val a { color: var(--accent); text-decoration: none; }
+    .contact-item-val a:hover { text-decoration: underline; }
+    .references-block { margin-top: 2.5rem; }
+    .references-block h4 {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 1rem;
+    }
+    .ref-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.2rem;
+      margin-bottom: 0.8rem;
+    }
+    .ref-name {
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .ref-title {
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 0.4rem;
+    }
+    .ref-contact {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+    }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.85rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--muted2); }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(56,189,248,0.08);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1120px; margin: 0 auto; padding: 0 2rem;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--muted2);
+    }
+    .footer-back {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--muted2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-back:hover { color: var(--accent); }
+
+    .glow-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent3), transparent);
+      margin: 0;
+      opacity: 0.3;
+    }
+
+    /* ANIMATIONS */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+    .stagger-4 { transition-delay: 0.4s; }
+    .stagger-5 { transition-delay: 0.5s; }
+
+    /* MOBILE MENU */
+    .mobile-menu {
+      display: none;
+      position: fixed; top: 0; right: 0;
+      width: min(320px, 100%);
+      height: 100vh;
+      background: rgba(5,8,16,0.97);
+      backdrop-filter: blur(20px);
+      border-left: 1px solid var(--border);
+      z-index: 200;
+      padding: 5rem 2rem 2rem;
+      flex-direction: column; gap: 1.5rem;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .mobile-menu.open { transform: translateX(0); display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--accent); }
+    .menu-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: none; border: none;
+      color: var(--muted); font-size: 1.2rem; cursor: pointer;
+      font-family: var(--font-mono);
+    }
+    .mobile-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 199;
+      background: rgba(0,0,0,0.6);
+    }
+    .mobile-overlay.open { display: block; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-visual { order: -1; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-left { position: static; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .resume-cta-box { flex-direction: column; align-items: flex-start; padding: 2.5rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 0 1.2rem; }
+      .hero-stats { gap: 1.2rem; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .resume-cta-box { padding: 2rem; }
+    }
+    .lb-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.84);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .25s;
+    pointer-events: none;
+  }
+  .lb-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .lb-box {
+    background: var(--bg, #fff);
+    border-radius: 14px;
+    width: min(720px, 94vw);
+    max-height: 92vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: scale(.94) translateY(20px);
+    transition: transform .28s cubic-bezier(.22,.68,0,1.2);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+  }
+  .lb-overlay.open .lb-box {
+    transform: scale(1) translateY(0);
+  }
+  .lb-top {
+    padding: 1rem 1.25rem;
+    border-bottom: 0.5px solid rgba(128,128,128,.15);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .lb-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text, #111);
+  }
+  .lb-subtitle {
+    font-size: 12px;
+    color: var(--muted, #888);
+    margin-top: 3px;
+  }
+  .lb-close-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .lb-close {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(128,128,128,.25);
+    background: rgba(128,128,128,.08);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--muted, #888);
+    transition: background .15s, transform .2s;
+    outline: none;
+  }
+  .lb-close:hover {
+    background: rgba(128,128,128,.18);
+    transform: rotate(90deg);
+  }
+  .lb-close-hint {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    font-size: 10px;
+    color: var(--muted2, #aaa);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .lb-img-wrap {
+    position: relative;
+    background: #0a0a0a;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .lb-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transition: opacity .18s;
+  }
+  .lb-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--bg2, #f5f5f5);
+  }
+  .lb-placeholder i {
+    font-size: 48px;
+    color: var(--muted2, #bbb);
+  }
+  .lb-placeholder p {
+    font-size: 13px;
+    color: var(--muted2, #bbb);
+  }
+  .lb-nav {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    pointer-events: none;
+  }
+  .lb-nav-btn {
+    pointer-events: all;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.52);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: background .15s, transform .15s;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .lb-nav-btn:hover { background: rgba(0,0,0,0.78); transform: scale(1.08); }
+  .lb-nav-btn:disabled { opacity: .2; cursor: default; transform: none; }
+  .lb-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+  }
+  .lb-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.35);
+    transition: background .2s, transform .2s;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+  }
+  .lb-dot.active { background: #fff; transform: scale(1.3); }
+  .lb-thumbs {
+    padding: .7rem 1rem;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    border-top: 0.5px solid rgba(128,128,128,.12);
+    flex-shrink: 0;
+    scrollbar-width: thin;
+  }
+  .lb-thumbs::-webkit-scrollbar { height: 4px; }
+  .lb-thumbs::-webkit-scrollbar-thumb { background: rgba(128,128,128,.25); border-radius: 2px; }
+  .lb-thumb {
+    width: 68px;
+    height: 48px;
+    border-radius: 7px;
+    overflow: hidden;
+    cursor: pointer;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+    transition: border-color .15s, opacity .15s;
+    background: rgba(128,128,128,.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lb-thumb.active { border-color: #4f8ef7; }
+  .lb-thumb:hover:not(.active) { opacity: .8; }
+  .lb-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .lb-thumb-ph { font-size: 22px; color: var(--muted2, #bbb); }
+  .lb-desc {
+    padding: .7rem 1.25rem;
+    font-size: 12.5px;
+    color: var(--muted, #666);
+    line-height: 1.6;
+    border-top: 0.5px solid rgba(128,128,128,.12);
+    overflow-y: auto;
+    max-height: 72px;
+    flex-shrink: 0;
+  }
+  .lb-drag-hint {
+    font-size: 10px;
+    color: var(--muted2, #bbb);
+    text-align: center;
+    padding: .4rem;
+    flex-shrink: 0;
+    letter-spacing: .02em;
+  }
+  
+  /* ── PROJECT CARD PREVIEW STRIP ── */
+  .project-preview {
+    position: relative;
+    height: 148px;
+    overflow: hidden;
+    cursor: pointer;
+    background: rgba(128,128,128,.07);
+    flex-shrink: 0;
+  }
+  .project-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .35s ease;
+  }
+  .project-preview:hover img { transform: scale(1.05); }
+  .preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0);
+    transition: background .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .project-preview:hover .preview-overlay { background: rgba(0,0,0,0.18); }
+  .preview-overlay-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #333;
+    opacity: 0;
+    transform: scale(.8);
+    transition: opacity .2s, transform .2s;
+  }
+  .project-preview:hover .preview-overlay-icon { opacity: 1; transform: scale(1); }
+  .preview-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background .2s;
+  }
+  .project-preview:hover .preview-placeholder { background: rgba(128,128,128,.06); }
+  .preview-placeholder i { font-size: 30px; color: var(--muted2, #c0c0c0); }
+  .preview-placeholder span { font-size: 12px; color: var(--muted2, #c0c0c0); }
+  .preview-count {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.52);
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo"><span>//</span> PORTFOLIO</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="assets/resume/Resume.pdf" target="_blank" class="btn btn-outline" style="padding:0.5rem 1.2rem;font-size:0.75rem;">Resume</a>
+      <a href="https://drive.google.com/drive/folders/1ChlD-AENFVJ4TPi7RtcYwGFQVzOITgG?usp=sharing" target="_blank" class="btn btn-outline" style="padding:0.5rem 1.2rem;font-size:0.75rem;">Project Reports</a>
+    </div>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<nav class="mobile-menu" id="mobileMenu">
+  <button class="menu-close" id="menuClose">✕</button>
+  <a href="#about" class="menu-link">About</a>
+  <a href="#skills" class="menu-link">Skills</a>
+  <a href="#projects" class="menu-link">Projects</a>
+  <a href="#contact" class="menu-link">Contact</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-tag fade-up">
+          <span class="dot"></span>
+          Seeking Internship Opportunities
+        </div>
+        <h1 class="hero-name fade-up stagger-1">
+          <span class="gradient-text">Rachana</span><br>A/P Dipan
+        </h1>
+        <p class="hero-subtitle fade-up stagger-2">
+          Mathematics &amp; Computer Graphics<br><em>Student @ Universiti Malaysia Sabah</em>
+        </p>
+        <p class="hero-desc fade-up stagger-3">
+A Mathematics and Computer Graphics student with a strong foundation in <span style="color:var(--accent)">Mathematics</span> — specializing in <span style="color:var(--purple)">Computer Vision</span>, <span style="color:var(--accent)">Machine Learning / AI Engineering</span>, <span style="color:var(--green)">Graphics Programming</span>, <span style="color:var(--accent)">Python Software Development</span>, <span style="color:var(--green)">Image Processing</span>, <span style="color:var(--accent)">Desktop Application Development</span>, and <span style="color:var(--purple)">UI/UX & Interactive Systems Development</span>.        </p>
+        <div class="hero-actions fade-up stagger-4">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+          <a href="#contact" class="btn btn-outline">Get In Touch</a>
+        </div>
+        <div class="hero-stats fade-up stagger-5">
+          <div class="stat-item">
+            <div class="stat-num">3.37</div>
+            <div class="stat-label">CGPA</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">12+</div>
+            <div class="stat-label">Projects</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">3×</div>
+            <div class="stat-label">Dean's List</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- closes hero-inner -->
+  </div>
+  <!-- closes container -->
+</section>
+<!-- closes hero section -->
+
+<div class="glow-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-left fade-up">
+        <img src="assets/about/myphoto.jpeg" alt="Rachana A/P Dipan" style="width:250px;height:220px;object-fit:cover;border-radius:6px;border:1px solid var(--border2);margin-bottom:1rem;display:block;" />
+        <div class="about-name">Rachana A/P Dipan</div>
+        <div class="contact-pills">
+          <a href="mailto:rachana.dipan@gmail.com" class="contact-pill"><span class="contact-pill-icon"></span>rachana.dipan@gmail.com</a>
+          <a href="tel:0189855493" class="contact-pill"><span class="contact-pill-icon"></span>018-9855493</a>
+        </div>
+        <div class="about-links">
+          <a href="https://www.linkedin.com/in/rachana-dipan-939b23237" target="_blank" class="social-link">LinkedIn</a>
+          <a href="mailto:rachana.dipan@gmail.com" class="social-link">Email</a>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="section-label fade-up">About Me</div>
+        <h2 class="section-title fade-up stagger-1">Bridging <span class="gradient-text">Math</span> and Machine Perception</h2>
+        <p class="fade-up stagger-2">
+          I'm a <strong>Mathematics Computer Graphics</strong> student at Universiti Malaysia Sabah with a strong background in 
+          programming, web development, and computer graphics. My work spans 
+          <span class="highlight-accent">computer vision</span>, 
+          <span class="highlight-purple">real-time graphics</span>, and 
+          <span class="highlight-green">interactive application development</span>.
+        </p>
+        <p class="fade-up stagger-3">
+          I've built everything from a full-featured <strong>image processing application</strong> modeled after Adobe Photoshop 
+          to a <strong>real-time image classification system</strong> using CNNs, and an 
+          <strong>AR business card</strong> app in Unity. I enjoy the full stack — from mathematical foundations to deployed applications.
+        </p>
+        <p class="fade-up stagger-4">
+          Beyond academics, I'm a <span class="highlight-accent">champion of the Co-Curricular Carnival</span> for theater performance, 
+          active in the MCG Club, Indian Community Club (SEKWIM), RACUMS, and an NGO (Friends of Meraki Daat). 
+          I served as Committee Member for the <strong>Mathematics Leadership Camp 2025</strong>.
+        </p>
+        <div class="edu-block fade-up stagger-5">
+          <div class="edu-degree">BSc. Hons. Mathematics Computer Graphics</div>
+          <div class="edu-inst">Universiti Malaysia Sabah · Oct 2022 – Present</div>
+          <div class="edu-gpa">CGPA: 3.37 (Ongoing)</div>
+          <div class="dean-badges">
+            <span class="dean-badge">Dean's List Sem 2 2023/24 — GPA 3.58</span>
+            <span class="dean-badge">Dean's List Sem 2 2024/25 — GPA 3.55</span>
+            <span class="dean-badge">Dean's List Sem 1 2025/26 — GPA 3.8</span>
+          </div>
+        </div>
+        <div class="edu-block fade-up" style="border-left-color: var(--muted2);">
+          <div class="edu-degree">Malaysia Higher School Certificate (STPM)</div>
+          <div class="edu-inst">SMK Johor Jaya (1) · July 2020 – June 2022</div>
+          <div class="edu-gpa" style="color:var(--muted);">Information &amp; Communications Technology · CGPA: 2.42</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label fade-up">Tech Stack</div>
+    <h2 class="section-title fade-up stagger-1">Skills &amp; <span class="gradient-text">Tools</span></h2>
+    <p class="skills-intro fade-up stagger-2">
+      Versatile across the full tech stack — from mathematical computing to interactive applications. Specialized in computer vision, real-time graphics, and ML, with working knowledge of UI/UX, databases, and system design.
+    </p>
+
+    <div class="skill-cat-label fade-up">// Programming Languages</div>
+    <div class="skills-grid">
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-blue"></span><span class="skill-name">Python</span><span class="skill-level">proficient</span></div>
+      <div class="skill-chip fade-up stagger-2"><span class="skill-dot dot-blue"></span><span class="skill-name">C</span><span class="skill-level">proficient</span></div>
+      <div class="skill-chip fade-up stagger-3"><span class="skill-dot dot-blue"></span><span class="skill-name">C#</span><span class="skill-level">proficient</span></div>
+      <div class="skill-chip fade-up stagger-4"><span class="skill-dot dot-blue"></span><span class="skill-name">HTML / CSS</span><span class="skill-level">proficient</span></div>
+      <div class="skill-chip fade-up stagger-5"><span class="skill-dot dot-purple"></span><span class="skill-name">C++</span><span class="skill-level">basic</span></div>
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-purple"></span><span class="skill-name">Java</span><span class="skill-level">basic</span></div>
+      <div class="skill-chip fade-up stagger-2"><span class="skill-dot dot-purple"></span><span class="skill-name">MySQL</span><span class="skill-level">basic</span></div>
+      <div class="skill-chip fade-up stagger-3"><span class="skill-dot dot-purple"></span><span class="skill-name">MATLAB</span><span class="skill-level">basic</span></div>
+    </div>
+
+    <div class="skill-cat-label fade-up">// Computer Vision &amp; ML</div>
+    <div class="skills-grid">
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-green"></span><span class="skill-name">OpenCV</span></div>
+      <div class="skill-chip fade-up stagger-2"><span class="skill-dot dot-green"></span><span class="skill-name">TensorFlow</span></div>
+      <div class="skill-chip fade-up stagger-3"><span class="skill-dot dot-green"></span><span class="skill-name">PyTorch</span></div>
+      <div class="skill-chip fade-up stagger-4"><span class="skill-dot dot-green"></span><span class="skill-name">scikit-learn</span></div>
+      <div class="skill-chip fade-up stagger-5"><span class="skill-dot dot-green"></span><span class="skill-name">CNN / SVM</span></div>
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-green"></span><span class="skill-name">NumPy / Matplotlib</span></div>
+    </div>
+
+    <div class="skill-cat-label fade-up">// Graphics &amp; UI</div>
+    <div class="skills-grid">
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-pink"></span><span class="skill-name">Unity</span><span class="skill-level">intermediate</span></div>
+      <div class="skill-chip fade-up stagger-2"><span class="skill-dot dot-pink"></span><span class="skill-name">Figma</span><span class="skill-level">intermediate</span></div>
+      <div class="skill-chip fade-up stagger-3"><span class="skill-dot dot-pink"></span><span class="skill-name">PyQt5</span></div>
+      <div class="skill-chip fade-up stagger-4"><span class="skill-dot dot-pink"></span><span class="skill-name">PyOpenGL</span></div>
+      <div class="skill-chip fade-up stagger-5"><span class="skill-dot dot-pink"></span><span class="skill-name">VTK</span></div>
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-purple"></span><span class="skill-name">Blender</span><span class="skill-level">basic</span></div>
+    </div>
+
+    <div class="skill-cat-label fade-up">// Relevant Coursework</div>
+    <div class="skills-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-blue"></span><span class="skill-name">Calculus</span></div>
+      <div class="skill-chip fade-up stagger-2"><span class="skill-dot dot-blue"></span><span class="skill-name">Linear Algebra</span></div>
+      <div class="skill-chip fade-up stagger-3"><span class="skill-dot dot-blue"></span><span class="skill-name">Computer Programming</span></div>
+      <div class="skill-chip fade-up stagger-4"><span class="skill-dot dot-blue"></span><span class="skill-name">Object-Oriented Programming</span></div>
+      <div class="skill-chip fade-up stagger-5"><span class="skill-dot dot-blue"></span><span class="skill-name">Advanced Calculus</span></div>
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-blue"></span><span class="skill-name">Real Analysis</span></div>
+      <div class="skill-chip fade-up stagger-2"><span class="skill-dot dot-blue"></span><span class="skill-name">Data Structures</span></div>
+      <div class="skill-chip fade-up stagger-3"><span class="skill-dot dot-blue"></span><span class="skill-name">Computer Graphics Fundamentals</span></div>
+      <div class="skill-chip fade-up stagger-4"><span class="skill-dot dot-blue"></span><span class="skill-name">Mathematical Statistics</span></div>
+      <div class="skill-chip fade-up stagger-5"><span class="skill-dot dot-blue"></span><span class="skill-name">Differential Equations</span></div>
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-blue"></span><span class="skill-name">Geometric Modelling</span></div>
+      <div class="skill-chip fade-up stagger-2"><span class="skill-dot dot-blue"></span><span class="skill-name">Database Systems</span></div>
+      <div class="skill-chip fade-up stagger-3"><span class="skill-dot dot-blue"></span><span class="skill-name">Digital Image Processing</span></div>
+      <div class="skill-chip fade-up stagger-4"><span class="skill-dot dot-blue"></span><span class="skill-name">Optimization and Mathematical Visualization</span></div>
+      <div class="skill-chip fade-up stagger-5"><span class="skill-dot dot-blue"></span><span class="skill-name">Machine Learning Fundamentals</span></div>
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-blue"></span><span class="skill-name">Computer Vision and Applications</span></div>
+      <div class="skill-chip fade-up stagger-2"><span class="skill-dot dot-blue"></span><span class="skill-name">Scientific Data Visualization</span></div>
+      <div class="skill-chip fade-up stagger-3"><span class="skill-dot dot-blue"></span><span class="skill-name">Discrete Mathematics</span></div>
+      <div class="skill-chip fade-up stagger-4"><span class="skill-dot dot-blue"></span><span class="skill-name">Cryptography</span></div>
+      <div class="skill-chip fade-up stagger-5"><span class="skill-dot dot-blue"></span><span class="skill-name">Fuzzy Mathematics</span></div>
+      <div class="skill-chip fade-up stagger-1"><span class="skill-dot dot-blue"></span><span class="skill-name">Real-Time Graphics</span></div>
+      <div class="skill-chip fade-up stagger-2"><span class="skill-dot dot-blue"></span><span class="skill-name">Human-Computer Interaction</span></div>
+      <div class="skill-chip fade-up stagger-3"><span class="skill-dot dot-blue"></span><span class="skill-name">Computer Organization and Architecture</span></div>
+      <div class="skill-chip fade-up stagger-4"><span class="skill-dot dot-blue"></span><span class="skill-name">System Analysis and Design</span></div>
+      <div class="skill-chip fade-up stagger-5"><span class="skill-dot dot-blue"></span><span class="skill-name">UI / UX</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- ============================================================
+     PROJECTS SECTION
+     ============================================================ -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label fade-up">Work</div>
+    <h2 class="section-title fade-up stagger-1">Featured <span class="gradient-text">Projects</span></h2>
+    <div class="projects-filter fade-up stagger-2">
+      <button class="filter-btn active" data-filter="all">All (13)</button>
+      <button class="filter-btn" data-filter="cv">Computer Vision</button>
+      <button class="filter-btn" data-filter="graphics">Graphics / AR</button>
+      <button class="filter-btn" data-filter="uiux">UI / UX</button>
+      <button class="filter-btn" data-filter="viz">Visualization</button>
+    </div>
+ 
+    <div class="projects-grid">
+ 
+      <!-- 1 · Corner Detection & Image Matching -->
+      <div class="project-card fade-up stagger-1" data-category="cv">
+        <div class="project-preview" onclick="openLightbox(0)" role="button" tabindex="0" aria-label="Preview Corner Detection project">
+          <!-- If you have a cover image, replace the placeholder below with:
+               <img src="assets/projects/corner-det-cover.png" alt="Corner Detection preview">
+               <div class="preview-overlay"><div class="preview-overlay-icon"><i class="ti ti-eye"></i></div></div>
+          -->
+          <div class="preview-placeholder">
+            <i class="ti ti-photo"></i>
+            <span>Click to preview</span>
+          </div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 3 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-green">Computer Vision</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">May 2025</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Corner Detection &amp; Image Matching System</div>
+          <div class="project-course">Computer Vision and Application</div>
+          <p class="project-desc">Implemented Harris, Shi-Tomasi, and SIFT algorithms from scratch — without using OpenCV's built-in functions. The PyQt5-based GUI visualizes each processing step and enables performance evaluation through feature matching and comparative analysis.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-blue">Python</span>
+            <span class="tech-tag tag-purple">PyQt5</span>
+            <span class="tech-tag tag-green">Harris</span>
+            <span class="tech-tag tag-green">Shi-Tomasi</span>
+            <span class="tech-tag tag-green">SIFT</span>
+            <span class="tech-tag tag-blue">NumPy</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>4 weeks · Course Project</span><span>From-scratch implementation</span></div>
+      </div>
+ 
+      <!-- 2 · Real-Time Image Classification & Object Detection -->
+      <div class="project-card fade-up stagger-2" data-category="cv">
+        <div class="project-preview" onclick="openLightbox(1)" role="button" tabindex="0" aria-label="Preview Image Classification project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 5 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-green">Computer Vision</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">Jun 2025</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Real-Time Image Classification &amp; Object Detection</div>
+          <div class="project-course">Computer Vision and Application</div>
+          <p class="project-desc">Built a real-time classification and detection system using CNNs with TensorFlow and PyTorch. Includes dataset loading, training, model saving/loading, and visualization tools for performance metrics and feature analysis across medical and flower image datasets.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-blue">TensorFlow</span>
+            <span class="tech-tag tag-blue">PyTorch</span>
+            <span class="tech-tag tag-purple">CNN</span>
+            <span class="tech-tag tag-purple">PyQt5</span>
+            <span class="tech-tag tag-green">OpenCV</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>4 weeks · Course Project</span><span>Multi-dataset evaluation</span></div>
+      </div>
+ 
+      <!-- 3 · Image Classification SVM -->
+      <div class="project-card fade-up stagger-3" data-category="cv">
+        <div class="project-preview" onclick="openLightbox(2)" role="button" tabindex="0" aria-label="Preview SVM Classification project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 3 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-green">Computer Vision</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">Apr 2025</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Image Classification System (SVM)</div>
+          <div class="project-course">Computer Vision and Application</div>
+          <p class="project-desc">Developed a classification system with SVM featuring dataset loading, training, testing, and real-time performance evaluation using precision, recall, accuracy, and confusion matrix metrics. Includes real-time graphing on Iris and Rose image datasets.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-blue">Python</span>
+            <span class="tech-tag tag-purple">scikit-learn</span>
+            <span class="tech-tag tag-green">SVM</span>
+            <span class="tech-tag tag-purple">PyQt5</span>
+            <span class="tech-tag tag-blue">Matplotlib</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>3 weeks · Course Project</span><span>Precision / Recall metrics</span></div>
+      </div>
+ 
+      <!-- 4 · My Own Adobe Photoshop -->
+      <div class="project-card fade-up stagger-4" data-category="cv">
+        <div class="project-preview" onclick="openLightbox(3)" role="button" tabindex="0" aria-label="Preview Adobe Photoshop clone project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 3 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-blue">Image Processing</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">Dec 2024</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">My Own Adobe Photoshop</div>
+          <div class="project-course">Digital Image Processing</div>
+          <p class="project-desc">A fully-featured image editor built with PyQt5 and OpenCV, featuring real-time histograms, advanced filtering, edge detection, thresholding, and interactive transformations. Includes drawing tools for shapes and freehand editing.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-blue">Python</span>
+            <span class="tech-tag tag-purple">PyQt5</span>
+            <span class="tech-tag tag-green">OpenCV</span>
+            <span class="tech-tag tag-blue">Matplotlib</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>4 weeks · Course Project</span><span>Full-featured editor</span></div>
+      </div>
+ 
+      <!-- 5 · Image Enhancement -->
+      <div class="project-card fade-up stagger-1" data-category="cv">
+        <div class="project-preview" onclick="openLightbox(4)" role="button" tabindex="0" aria-label="Preview Image Enhancement project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 2 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-blue">Image Processing</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">Dec 2024</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Image Enhancement Application</div>
+          <div class="project-course">Digital Image Processing (SV30703)</div>
+          <p class="project-desc">Combines DCP and HDR techniques with noise removal, sharpness improvement, and histogram equalization. Integrated real-time GUI visualization and quality benchmarking using SSIM and PSNR metrics.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-blue">Python</span>
+            <span class="tech-tag tag-purple">PyQt5</span>
+            <span class="tech-tag tag-green">OpenCV</span>
+            <span class="tech-tag tag-pink">SSIM / PSNR</span>
+            <span class="tech-tag tag-blue">NumPy</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>4 weeks · Mini Project</span><span>DCP + HDR pipeline</span></div>
+      </div>
+ 
+      <!-- 6 · AR Business Card -->
+      <div class="project-card fade-up stagger-2" data-category="graphics">
+        <div class="project-preview" onclick="openLightbox(5)" role="button" tabindex="0" aria-label="Preview AR Business Card project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 2 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-purple">AR / Real-Time Graphics</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">Mar 2025</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Augmented Reality Business Card</div>
+          <div class="project-course">Real-Time Graphics</div>
+          <p class="project-desc">Built with Unity and Vuforia SDK — scanning a business card triggers a 3D animated drone model that hovers and flies above the card. Designed and scaled 3D models in Blender, integrated image tracking, and implemented extended tracking for stable visualization.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-purple">Unity</span>
+            <span class="tech-tag tag-purple">C#</span>
+            <span class="tech-tag tag-pink">Vuforia SDK</span>
+            <span class="tech-tag tag-blue">Blender</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>1 week · Course Project</span><span>AR + Image Tracking</span></div>
+      </div>
+ 
+      <!-- 7 · 2D/3D Game Prototype -->
+      <div class="project-card fade-up stagger-3" data-category="graphics">
+        <div class="project-preview" onclick="openLightbox(6)" role="button" tabindex="0" aria-label="Preview 2D/3D Game Prototype project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 5 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-purple">Game / Graphics</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">Jan 2025</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">2D / 3D Game Prototype</div>
+          <div class="project-course">Real-Time Graphics</div>
+          <p class="project-desc">A Unity game featuring character control, animation, and interactive gameplay across multiple difficulty levels. Designed engaging mechanics, GUI/HUD elements, and sound effects, with a 30–60 second gameplay trailer.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-purple">Unity</span>
+            <span class="tech-tag tag-purple">C#</span>
+            <span class="tech-tag tag-blue">Animation</span>
+            <span class="tech-tag tag-green">HUD Design</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>4 weeks · Course Project</span><span>Multi-level gameplay</span></div>
+      </div>
+ 
+      <!-- 8 · AR Face Filter -->
+      <div class="project-card fade-up stagger-4" data-category="graphics">
+        <div class="project-preview" onclick="openLightbox(7)" role="button" tabindex="0" aria-label="Preview AR Face Filter project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 1 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-purple">AR / Real-Time Graphics</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">Nov 2024</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Augmented Reality Face Filter</div>
+          <div class="project-course">Real-Time Graphics</div>
+          <p class="project-desc">Created an AR filter in Unity featuring a dynamic green face texture and animated rain cloud effect to express mood through visual interaction.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-purple">Unity</span>
+            <span class="tech-tag tag-purple">C#</span>
+            <span class="tech-tag tag-pink">AR</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>1 week · Course Project</span><span>Facial AR interaction</span></div>
+      </div>
+ 
+      <!-- 9 · Bouncing Ball Game -->
+      <div class="project-card fade-up stagger-1" data-category="graphics">
+        <div class="project-preview" onclick="openLightbox(8)" role="button" tabindex="0" aria-label="Preview Bouncing Ball Game project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 4 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-blue">OpenGL / Game</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">May 2024</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Bouncing Ball Game</div>
+          <div class="project-course">Fundamentals of Computer Graphics</div>
+          <p class="project-desc">An interactive game built with PyOpenGL and PyQt5 featuring multiple difficulty levels, a scoring system, pause menu, in-game stats, and an attractive interface design to enhance user engagement.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-blue">Python</span>
+            <span class="tech-tag tag-green">PyOpenGL</span>
+            <span class="tech-tag tag-purple">PyQt5</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>3 weeks · Course Project</span><span>Multi-level difficulty</span></div>
+      </div>
+ 
+      <!-- 10 · Faculty Website Redesign -->
+      <div class="project-card fade-up stagger-2" data-category="uiux">
+        <div class="project-preview" onclick="openLightbox(9)" role="button" tabindex="0" aria-label="Preview Faculty Website Redesign project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 3 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-pink">UI / UX Design</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">Jun 2025</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Faculty Website Redesign</div>
+          <div class="project-course">Integrated Human Computer Interface (UI/UX)</div>
+          <p class="project-desc">Redesigned a faculty website using user-centered design: user research, heuristic evaluation, and usability testing. Delivered low- and high-fidelity prototypes plus a clickable Figma prototype with improved navigation, layout, and 3D-inspired animated background.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-pink">Figma</span>
+            <span class="tech-tag tag-blue">UX Research</span>
+            <span class="tech-tag tag-purple">Heuristic Eval</span>
+            <span class="tech-tag tag-green">Prototyping</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>3.5 weeks · Course Project</span><span>Full UCD process</span></div>
+      </div>
+ 
+      <!-- 11 · Health App -->
+      <div class="project-card fade-up stagger-3" data-category="uiux">
+        <div class="project-preview" onclick="openLightbox(10)" role="button" tabindex="0" aria-label="Preview Health App project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 3 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-pink">UI / UX Design</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">May 2025</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Health &amp; Nutritional Application</div>
+          <div class="project-course">Integrated Human Computer Interface (UI/UX)</div>
+          <p class="project-desc">Designed a diet tracking and wellness app with calorie tracking, workout logging, meal planning, and hydration reminders. Conducted user research, created personas, and developed interactive wireframes and high-fidelity Figma prototypes.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-pink">Figma</span>
+            <span class="tech-tag tag-blue">Persona Design</span>
+            <span class="tech-tag tag-purple">Wireframing</span>
+            <span class="tech-tag tag-green">User Research</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>3 weeks · Course Project</span><span>Hi-fi prototype</span></div>
+      </div>
+ 
+      <!-- 12 · Blender-Like App -->
+      <div class="project-card fade-up stagger-4" data-category="viz">
+        <div class="project-preview" onclick="openLightbox(11)" role="button" tabindex="0" aria-label="Preview Blender-Like Visualization project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 4 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-blue">Scientific Visualization</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">Nov 2025</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Blender-Like 3D Visualization Application</div>
+          <div class="project-course">Scientific Data Visualization</div>
+          <p class="project-desc">A 3D visualization and editing app using Python, VTK, and PyQt5. Allows loading, generating, visualizing, and transforming 3D models through an interactive interface with measurement tools, lighting/camera controls, and transform operations.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-blue">Python</span>
+            <span class="tech-tag tag-green">VTK</span>
+            <span class="tech-tag tag-purple">PyQt5</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>3 weeks · Course Project</span><span>VTK-based 3D editor</span></div>
+      </div>
+ 
+      <!-- 13 · DICOM Medical Visualizer -->
+      <div class="project-card fade-up stagger-1" data-category="viz">
+        <div class="project-preview" onclick="openLightbox(12)" role="button" tabindex="0" aria-label="Preview DICOM Medical Visualizer project">
+          <div class="preview-placeholder"><i class="ti ti-photo"></i><span>Click to preview</span></div>
+          <div class="preview-count"><i class="ti ti-photos" style="font-size:12px"></i> 4 screenshots</div>
+        </div>
+        <div class="project-header">
+          <span class="project-cat-tag tag-blue">Scientific Visualization</span>
+          <span class="project-footer" style="padding:0;border:none;font-size:0.7rem;color:var(--muted2);">Dec 2025</span>
+        </div>
+        <div class="project-body">
+          <div class="project-title">DICOM Advanced Medical Data Visualizer</div>
+          <div class="project-course">Scientific Data Visualization</div>
+          <p class="project-desc">An advanced DICOM medical visualizer enabling users to load, visualize, measure, and manipulate medical imaging datasets. Features volume rendering with transfer functions, clipping, orthogonal slices, and real-time distance measurement on 3D volumes.</p>
+          <div class="project-tech">
+            <span class="tech-tag tag-blue">Python</span>
+            <span class="tech-tag tag-green">VTK</span>
+            <span class="tech-tag tag-purple">PyQt5</span>
+            <span class="tech-tag tag-pink">DICOM</span>
+          </div>
+        </div>
+        <div class="project-footer"><span>3 weeks · Course Project</span><span>Medical imaging</span></div>
+      </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="container">
+    <div class="resume-cta-box fade-up">
+      <div class="resume-text">
+        <div class="section-label" style="margin-bottom:0.8rem;">Resume & Portfolio</div>
+        <h3>Ready to explore<br><span class="gradient-text">my work?</span></h3>
+        <p>Download or preview my resume, or dive into the full Google Drive portfolio containing detailed project reports, source code, screenshots, and documentation for all 12+ projects.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem;flex-shrink:0;">
+        <a href="https://drive.google.com/drive/folders/1ChlD-AENFVJ4-TPi7RtcYwGFQVzOITgG?usp=drive_link" target="_blank" class="btn btn-primary" style="white-space:nowrap;">
+          ↗ Open Project Reports
+        </a>
+        <a href="assets/resume/Resume.pdf" download class="btn btn-outline" style="white-space:nowrap;justify-content:center;border-color:var(--green);color:var(--green);">
+          ↓ Download Resume
+        </a>
+        <a href="assets/resume/Resume.pdf" target="_blank" class="btn btn-outline" style="white-space:nowrap;justify-content:center;border-color:var(--purple);color:var(--purple);">
+          ⊙ Preview Resume
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label fade-up">Contact</div>
+    <h2 class="section-title fade-up stagger-1">Let's <span class="gradient-text">Connect</span></h2>
+
+    <div class="contact-grid">
+      <div class="contact-info fade-up stagger-2">
+        <h3>Open to internship &amp; full-time opportunities</h3>
+        <p>Currently seeking internship opportunities in technology and creative fields. Whether it's computer vision research, machine learning, real-time graphics, scientific visualization, or UI/UX design — I bring a strong mathematical foundation, hands-on project experience, and a genuine curiosity to learn.</p>
+        <div class="contact-item">
+          <span class="contact-bullet"></span>
+          <div class="contact-item-text">
+            <div class="contact-item-label">Email</div>
+            <div class="contact-item-val"><a href="mailto:rachana.dipan@gmail.com">rachana.dipan@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-bullet"></span>
+          <div class="contact-item-text">
+            <div class="contact-item-label">Phone</div>
+            <div class="contact-item-val"><a href="tel:0189855493">018-9855493</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-bullet"></span>
+          <div class="contact-item-text">
+            <div class="contact-item-label">LinkedIn</div>
+            <div class="contact-item-val"><a href="https://www.linkedin.com/in/rachana-dipan-939b23237" target="_blank">linkedin.com/in/rachana-dipan-939b23237</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-bullet"></span>
+          <div class="contact-item-text">
+            <div class="contact-item-label">Location</div>
+            <div class="contact-item-val">Malaysia</div>
+          </div>
+        </div>
+
+        <div class="references-block">
+          <h4>// References</h4>
+          <div class="ref-card">
+            <div class="ref-name">Ts. Rechard Lee</div>
+            <div class="ref-title">Head of Programme, Mathematics with Computer Graphics<br>Faculty of Science and Technology, UMS</div>
+            <div class="ref-contact">rechard@ums.edu.my · 103651</div>
+          </div>
+          <div class="ref-card">
+            <div class="ref-name">Prof. Dr. Abdullah Bin Bade</div>
+            <div class="ref-title">Professor (Gred Khas C – VK7)<br>Faculty of Science and Technology, UMS</div>
+            <div class="ref-contact">abb@ums.edu.my · 102748</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-up stagger-3">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:2rem;">
+          <form id="contactForm" action="https://formspree.io/f/mjgzabqr" method="POST">
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" name="name" placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" name="email" placeholder="your@email.com" required />
+            </div>
+            <div class="form-group">
+              <label>Subject</label>
+              <input type="text" name="subject" placeholder="Internship / Full-Time / Other" />
+            </div>
+            <div class="form-group">
+              <label>Message</label>
+              <textarea name="message" placeholder="Your message..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+              Send Message
+            </button>
+            <div id="formMsg" style="margin-top:1rem;font-family:var(--font-mono);font-size:0.8rem;display:none;"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-copy">
+      © <span id="year"></span> Rachana A/P Dipan &nbsp;·&nbsp; BSc Mathematics Computer Graphics @ UMS
+    </div>
+    <a href="#hero" class="footer-back">Back to top</a>
+  </div>
+</footer>
+
+<script>
+  // NAVBAR SCROLL
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+  });
+
+  // MOBILE MENU
+  const hamBtn  = document.getElementById('hamburgerBtn');
+  const mobMenu = document.getElementById('mobileMenu');
+  const overlay = document.getElementById('mobileOverlay');
+  const closeBtn = document.getElementById('menuClose');
+  function openMenu() { mobMenu.classList.add('open'); overlay.classList.add('open'); }
+  function closeMenu() { mobMenu.classList.remove('open'); overlay.classList.remove('open'); }
+  hamBtn.addEventListener('click', openMenu);
+  closeBtn.addEventListener('click', closeMenu);
+  overlay.addEventListener('click', closeMenu);
+  document.querySelectorAll('.menu-link').forEach(l => l.addEventListener('click', closeMenu));
+
+  // SCROLL ANIMATIONS
+  const fader = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => fader.observe(el));
+
+  // HERO immediate animation
+  document.querySelectorAll('#hero .fade-up').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), i * 90 + 100);
+  });
+
+  // FOOTER YEAR
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // PROJECT FILTER
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.project-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      projectCards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.removeAttribute('data-hidden');
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // CONTACT FORM
+  const contactForm = document.getElementById('contactForm');
+  const formMsg = document.getElementById('formMsg');
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(contactForm);
+    const response = await fetch(contactForm.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+    formMsg.style.display = 'block';
+    if (response.ok) {
+      formMsg.style.color = 'var(--green)';
+      formMsg.textContent = '✓ Message sent! I will get back to you soon.';
+      contactForm.reset();
+    } else {
+      formMsg.style.color = 'var(--pink)';
+      formMsg.textContent = '✕ Something went wrong. Please email me directly.';
+    }
+  });
+</script>
+
+<!-- ============================================================
+     LIGHTBOX MODAL  
+     ============================================================ -->
+<div class="lb-overlay" id="lb" role="dialog" aria-modal="true" aria-label="Project preview">
+  <div class="lb-box" id="lbBox">
+ 
+    <div class="lb-top">
+      <div>
+        <div class="lb-title" id="lbTitle"></div>
+        <div class="lb-subtitle" id="lbSubtitle"></div>
+      </div>
+      <div class="lb-close-wrap">
+        <button class="lb-close" id="lbClose" aria-label="Close preview">
+          <i class="ti ti-x"></i>
+        </button>
+        <div class="lb-close-hint">esc · or drag up</div>
+      </div>
+    </div>
+ 
+    <div class="lb-img-wrap" id="lbImgWrap">
+      <div class="lb-placeholder" id="lbPlaceholder" style="display:none">
+        <i class="ti ti-device-desktop-analytics"></i>
+        <p>No screenshots yet — add images to the PROJECTS array</p>
+      </div>
+      <img id="lbImg" src="" alt="" style="display:none">
+      <div class="lb-nav">
+        <button class="lb-nav-btn" id="lbPrev" aria-label="Previous screenshot">
+          <i class="ti ti-chevron-left"></i>
+        </button>
+        <button class="lb-nav-btn" id="lbNext" aria-label="Next screenshot">
+          <i class="ti ti-chevron-right"></i>
+        </button>
+      </div>
+      <div class="lb-dots" id="lbDots"></div>
+    </div>
+ 
+    <div class="lb-thumbs" id="lbThumbs"></div>
+    <div class="lb-desc" id="lbDesc"></div>
+    <div class="lb-drag-hint">↑ drag / swipe up to close &nbsp;·&nbsp; ← → to navigate</div>
+ 
+  </div>
+</div>
+ 
+  <!-- ============================================================
+      LIGHTBOX SCRIPT  — keep at the bottom, or in your main JS
+  ============================================================ -->
+  <script>
+  /* ---------------------------------------------------------------
+    PROJECTS DATA
+    For each project, add your screenshot paths to `images`.
+    The first image is shown as the card thumbnail.
+    If images is empty, a placeholder is shown. 
+    --------------------------------------------------------------- */
+  const PROJECTS = [
+    {
+      id: 0,
+      title: "Corner Detection & Image Matching System",
+      course: "Computer Vision and Application · May 2025",
+      desc: "Implemented Harris, Shi-Tomasi, and SIFT algorithms from scratch without using OpenCV's built-in functions. The PyQt5-based GUI visualizes each processing step and enables performance evaluation through feature matching and comparative analysis.",
+      images: [
+        'assets/projects/cornerdetection1.png',
+        'assets/projects/cornerdetection2.png',
+        'assets/projects/cornerdetection3.png'
+      ]
+    },
+    {
+      id: 1,
+      title: "Real-Time Image Classification & Object Detection",
+      course: "Computer Vision and Application · Jun 2025",
+      desc: "Built a real-time classification and detection system using CNNs with TensorFlow and PyTorch. Includes dataset loading, training, model saving/loading, and visualization tools for performance metrics and feature analysis.",
+      images: [
+        'assets/projects/imageclassification1.png',
+        'assets/projects/imageclassification2.png',
+        'assets/projects/imageclassification3.png',
+        'assets/projects/imageclassification4.png',
+        'assets/projects/imageclassification5.png'
+      ]
+    },
+    {
+      id: 2,
+      title: "Image Classification System (SVM)",
+      course: "Computer Vision and Application · Apr 2025",
+      desc: "Developed a classification system with SVM featuring dataset loading, training, testing, and real-time performance evaluation using precision, recall, accuracy, and confusion matrix metrics.",
+      images: [
+        'assets/projects/classification2.png',
+        'assets/projects/classification1.png',
+        'assets/projects/classification3.png'
+      ]
+    },
+    {
+      id: 3,
+      title: "My Own Adobe Photoshop",
+      course: "Digital Image Processing · Dec 2024",
+      desc: "A fully-featured image editor built with PyQt5 and OpenCV, featuring real-time histograms, advanced filtering, edge detection, thresholding, and interactive transformations. Includes drawing tools for shapes and freehand editing.",
+      images: [
+        'assets/projects/adobe1.png',
+        'assets/projects/adobe2.png',
+        'assets/projects/adobe3.png'
+      ]
+    },
+    {
+      id: 4,
+      title: "Image Enhancement Application",
+      course: "Digital Image Processing (SV30703) · Dec 2024",
+      desc: "Combines DCP and HDR techniques with noise removal, sharpness improvement, and histogram equalization. Integrated real-time GUI visualization and quality benchmarking using SSIM and PSNR metrics.",
+      images: [
+        'assets/projects/imageenhancement1.png',
+        'assets/projects/imageenhancement2.png'
+      ]
+    },
+    {
+      id: 5,
+      title: "Augmented Reality Business Card",
+      course: "Real-Time Graphics · Mar 2025",
+      desc: "Built with Unity and Vuforia SDK. Scanning a business card triggers a 3D animated drone model that hovers and flies above the card. Designed and scaled 3D models in Blender and implemented extended tracking for stable visualization.",
+      images: [
+        'assets/projects/ARbc1.png',
+        'assets/projects/ARbc2.png'
+      ]
+    },
+    {
+      id: 6,
+      title: "2D / 3D Game Prototype",
+      course: "Real-Time Graphics · Jan 2025",
+      desc: "A Unity game featuring character control, animation, and interactive gameplay across multiple difficulty levels. Designed engaging mechanics, GUI/HUD elements, and sound effects, with a gameplay trailer.",
+      images: [
+        'assets/projects/superninja1.png',
+        'assets/projects/superninja2.png',
+        'assets/projects/superninja3.png',
+        'assets/projects/superninja4.png',
+        'assets/projects/superninja5.png'
+      ]
+    },
+    {
+      id: 7,
+      title: "Augmented Reality Face Filter",
+      course: "Real-Time Graphics · Nov 2024",
+      desc: "Created an AR filter in Unity featuring a dynamic green face texture and animated rain cloud effect to express mood through visual interaction.",
+      images: [
+        'assets/projects/ARff1.png',
+      ]
+    },
+    {
+      id: 8,
+      title: "Bouncing Ball Game",
+      course: "Fundamentals of Computer Graphics · May 2024",
+      desc: "An interactive game built with PyOpenGL and PyQt5 featuring multiple difficulty levels, a scoring system, pause menu, in-game stats, and an attractive interface design.",
+      images: [
+        'assets/projects/bounceball1.png',
+        'assets/projects/bounceball2.png',
+        'assets/projects/bounceball3.png',
+        'assets/projects/bounceball4.png'
+      ]
+    },
+    {
+      id: 9,
+      title: "Faculty Website Redesign",
+      course: "Integrated Human Computer Interface (UI/UX) · Jun 2025",
+      desc: "Redesigned a faculty website using user-centered design: user research, heuristic evaluation, and usability testing. Delivered low- and high-fidelity prototypes plus a clickable Figma prototype.",
+      images: [
+        'assets/projects/UMS1.png',
+        'assets/projects/UMS2.png',
+        'assets/projects/UMS3.png'
+      ]
+    },
+    {
+      id: 10,
+      title: "Health & Nutritional Application",
+      course: "Integrated Human Computer Interface (UI/UX) · May 2025",
+      desc: "Designed a diet tracking and wellness app with calorie tracking, workout logging, meal planning, and hydration reminders. Conducted user research, created personas, and developed high-fidelity Figma prototypes.",
+      images: [
+        'assets/projects/HN1.png',
+        'assets/projects/HN2.png',
+        'assets/projects/HN3.png'
+      ]
+    },
+    {
+      id: 11,
+      title: "Blender-Like 3D Visualization Application",
+      course: "Scientific Data Visualization · Nov 2025",
+      desc: "A 3D visualization and editing app using Python, VTK, and PyQt5. Allows loading, generating, visualizing, and transforming 3D models with measurement tools, lighting/camera controls, and transform operations.",
+      images: [
+        'assets/projects/blender1.png',
+        'assets/projects/blender2.jpeg',
+        'assets/projects/blender3.jpeg',
+        'assets/projects/blender4.jpeg',
+      ]
+    },
+    {
+      id: 12,
+      title: "DICOM Advanced Medical Data Visualizer",
+      course: "Scientific Data Visualization · Dec 2025",
+      desc: "An advanced DICOM medical visualizer enabling users to load, visualize, measure, and manipulate medical imaging datasets. Features volume rendering with transfer functions, clipping, orthogonal slices, and real-time distance measurement.",
+      images: [
+        'assets/projects/DICOM1.png',
+        'assets/projects/DICOM2.png',
+        'assets/projects/DICOM3.png',
+        'assets/projects/DICOM4.png'
+
+      ]
+    }
+  ];
+  
+  /* ---------------------------------------------------------------
+    AUTO-INJECT COVER THUMBNAILS
+    Once you add images to the PROJECTS array above, this loop
+    automatically swaps the placeholder for a real <img> tag.
+    --------------------------------------------------------------- */
+  document.querySelectorAll('.project-preview').forEach((el, idx) => {
+    const p = PROJECTS[idx];
+    if (!p || !p.images || p.images.length === 0) return;
+  
+    const placeholder = el.querySelector('.preview-placeholder');
+    if (placeholder) placeholder.remove();
+  
+    const img = document.createElement('img');
+    img.src = p.images[0];
+    img.alt = p.title + ' preview';
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;transition:transform .35s ease';
+  
+    const overlay = document.createElement('div');
+    overlay.className = 'preview-overlay';
+    overlay.innerHTML = '<div class="preview-overlay-icon"><i class="ti ti-eye"></i></div>';
+  
+    el.insertBefore(img, el.firstChild);
+    el.insertBefore(overlay, el.querySelector('.preview-count'));
+  });
+  
+  /* ---------------------------------------------------------------
+    LIGHTBOX ENGINE
+    --------------------------------------------------------------- */
+  let curProj = 0, curImg = 0;
+  let dragStartY = 0, dragStartX = 0, isDragging = false;
+  
+  const lb      = document.getElementById('lb');
+  const lbBox   = document.getElementById('lbBox');
+  const lbImg   = document.getElementById('lbImg');
+  const lbPH    = document.getElementById('lbPlaceholder');
+  const lbDots  = document.getElementById('lbDots');
+  const lbThumbs= document.getElementById('lbThumbs');
+  
+  function openLightbox(idx) {
+    curProj = idx;
+    curImg  = 0;
+    const p = PROJECTS[idx];
+    document.getElementById('lbTitle').textContent    = p.title;
+    document.getElementById('lbSubtitle').textContent = p.course;
+    document.getElementById('lbDesc').textContent     = p.desc;
+    renderLightbox();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lbClose').focus();
+  }
+  
+  function closeLightbox() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  
+  function navigate(dir) {
+    const imgs = PROJECTS[curProj].images;
+    if (!imgs || !imgs.length) return;
+    curImg = Math.max(0, Math.min(imgs.length - 1, curImg + dir));
+    renderLightbox();
+  }
+  
+  function renderLightbox() {
+    const p    = PROJECTS[curProj];
+    const imgs = p.images || [];
+    const has  = imgs.length > 0;
+  
+    if (has) {
+      lbPH.style.display  = 'none';
+      lbImg.style.display = 'block';
+      lbImg.style.opacity = '0';
+      lbImg.src           = imgs[curImg];
+      lbImg.alt           = p.title + ' screenshot ' + (curImg + 1);
+      lbImg.onload        = () => { lbImg.style.opacity = '1'; };
+    } else {
+      lbPH.style.display  = 'flex';
+      lbImg.style.display = 'none';
+    }
+  
+    document.getElementById('lbPrev').disabled = curImg === 0;
+    document.getElementById('lbNext').disabled = !has || curImg >= imgs.length - 1;
+  
+    /* dots */
+    lbDots.innerHTML = '';
+    if (has && imgs.length > 1) {
+      imgs.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'lb-dot' + (i === curImg ? ' active' : '');
+        d.setAttribute('aria-label', 'Go to screenshot ' + (i + 1));
+        d.onclick = () => { curImg = i; renderLightbox(); };
+        lbDots.appendChild(d);
+      });
+    }
+  
+    /* thumbnails */
+    lbThumbs.innerHTML = '';
+    if (has) {
+      imgs.forEach((src, i) => {
+        const t = document.createElement('div');
+        t.className = 'lb-thumb' + (i === curImg ? ' active' : '');
+        t.setAttribute('role', 'button');
+        t.setAttribute('tabindex', '0');
+        t.setAttribute('aria-label', 'Screenshot ' + (i + 1));
+        t.innerHTML = `<img src="${src}" alt="thumb ${i+1}">`;
+        t.onclick = () => { curImg = i; renderLightbox(); };
+        lbThumbs.appendChild(t);
+      });
+    }
+  }
+  
+  /* buttons */
+  document.getElementById('lbPrev').onclick  = () => navigate(-1);
+  document.getElementById('lbNext').onclick  = () => navigate(1);
+  document.getElementById('lbClose').onclick = closeLightbox;
+  
+  /* click outside */
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+  
+  /* keyboard */
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+  });
+  
+  /* touch swipe */
+  lbBox.addEventListener('touchstart', e => {
+    dragStartY = e.touches[0].clientY;
+    dragStartX = e.touches[0].clientX;
+    isDragging = true;
+  }, { passive: true });
+  
+  lbBox.addEventListener('touchend', e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const dy = dragStartY - e.changedTouches[0].clientY;
+    const dx = dragStartX - e.changedTouches[0].clientX;
+    if (dy > 60 && Math.abs(dy) > Math.abs(dx)) {
+      closeLightbox();
+    } else if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      navigate(dx > 0 ? 1 : -1);
+    }
+  });
+  
+  /* mouse drag (desktop swipe) */
+  lbBox.addEventListener('mousedown', e => {
+    if (e.target.closest('button') || e.target.closest('.lb-thumb')) return;
+    dragStartY = e.clientY;
+    dragStartX = e.clientX;
+    isDragging = true;
+  });
+  document.addEventListener('mouseup', e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const dy = dragStartY - e.clientY;
+    const dx = dragStartX - e.clientX;
+    if (dy > 80 && Math.abs(dy) > Math.abs(dx)) {
+      closeLightbox();
+    } else if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy)) {
+      navigate(dx > 0 ? 1 : -1);
+    }
+  });
+  </script>
+</body>
+</html>
+
+
